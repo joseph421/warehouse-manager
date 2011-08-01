@@ -1,0 +1,40 @@
+<!DOCTYPE web-app PUBLIC
+	 "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+	 "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>Archetype Created Web Application</display-name>
+	<!--
+	<servlet>
+		<servlet-name>hessionService</servlet-name>
+		<servlet-class>com.caucho.hessian.server.HessionServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<init-param>
+			<param-name>service-class</param-name>
+			<param-value>lee.HelloImpl</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>hessionService</servlet-name>
+		<url-pattern>/hessionService</url-pattern>
+	</servlet-mapping>
+	-->
+	<servlet>		
+		<display-name>WarehouseManagerServlet</display-name>
+		<servlet-name>WarehouseManagerServlet</servlet-name>
+		<servlet-class>joe.warehouse.manager.WarehouseManagerServlet</servlet-class>		
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>WarehouseManagerServlet</servlet-name>
+		<url-pattern>/warehousemanagerservlet/*</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error.jsp</location>
+	</error-page>
+</web-app>
+
