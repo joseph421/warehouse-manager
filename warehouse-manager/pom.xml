@@ -57,6 +57,11 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>co.common</groupId>
+			<artifactId>co-casclient</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>warehouse-manager</finalName>

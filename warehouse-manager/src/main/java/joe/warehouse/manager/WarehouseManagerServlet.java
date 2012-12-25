@@ -17,13 +17,17 @@ import com.caucho.hessian.server.HessianServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import joe.warehouse.manager.util.XmlUtils;
+
 import org.apache.log4j.Logger;
+
 
 public class WarehouseManagerServlet extends HessianServlet
 {
 	private static final long serialVersionUID = 1L;
 	// private static final Logger log = Logger.getLogger(ConfigAdminServletTest.class);
 	private static String realPath = "";
+	private static final Logger log = Logger.getLogger(WarehouseManagerServlet.class);
 
 	private static String ACTION_SEARCHCONFIG = "searchConfig";
 	private static String ACTION_SEARCHTYPE = "searchType";
@@ -34,6 +38,7 @@ public class WarehouseManagerServlet extends HessianServlet
 
 	private static String CONFIGADMIN_URL = null;
 	private static String CONFIGADMIN_METHOD = null;
+	
 
 	public WarehouseManagerServlet()
 	{
@@ -59,6 +64,7 @@ public class WarehouseManagerServlet extends HessianServlet
 		String saveFlag = request.getParameter("saveFlag");
 		String start = request.getParameter("start");
 		String limit = request.getParameter("limit");
+		ServletException curException = null;
 
 		response.setContentType("text/xml;charset=UTF-8");
 		response.setHeader("Pragma", "No-cache");
@@ -66,7 +72,37 @@ public class WarehouseManagerServlet extends HessianServlet
 		response.setDateHeader("Expires", 0);
 		out = response.getWriter();
 		String responseString = "";
+		Object responseObj = null;
+		
+		if (action == null)
+			return;
 
+		try {
+			// doc = getTreeNodeTestResponse("telecom", "0");
+			if (action == null || "".equals(action.trim())) {
+				return;
+			}
+
+			if ("getNerTypes".equalsIgnoreCase(action)) {
+				// get ner Types
+//				responseObj = getNerTypesJson(action);
+			}else if ("getRegNersByType".equalsIgnoreCase(action)) {
+//				responseObj = getRegNersByType(type);
+								
+			}
+		}
+		catch(Exception ex){			
+			ex.printStackTrace();
+			log.error("RetrieveDataServlet.doGet() ", ex);
+			curException = new ServletException(ex);
+		}
+
+		
+		if (responseObj != null) {
+			responseString = responseObj.toString();
+			log.info("Retrieve " + action + " ===> " + responseString);
+		}
+		
 		out.println(responseString);
 		out.flush();
 		out.close();
@@ -77,5 +113,31 @@ public class WarehouseManagerServlet extends HessianServlet
 	{
 		doGet(request, response);
 	}
+	
+	public void init(ServletConfig config) throws ServletException {
+		String urlFilePath = config.getInitParameter("serviceUrl");
+		if (null == urlFilePath) {
+			log.error("TrainingServlet.init() Can not get config file url.");
+		} else {
+			try {				
+				String realPath = config.getServletContext().getRealPath(
+						urlFilePath);
+				log.info("config file real path ->" + realPath);
+				XmlUtils doc = new XmlUtils(new File(realPath));
+				
+				CONFIGADMIN_URL = doc.getNodeText("service_url/service/url");
+				CONFIGADMIN_METHOD = doc
+						.getNodeText("service_url/service/parser_method");
+
+//				Service.initWSDL(CONFIGADMIN_URL);
+//				termnetService = Service.getInstance();
+//				nerServiceSoap = Service.getInstance().getServiceSoap();
+			} catch (Exception ex) {
+				log.error("webService.init() Can not open connection." + ex);
+				ex.printStackTrace();
+			}
+		}
+	}
+
 
 }

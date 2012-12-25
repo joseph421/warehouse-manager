@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service_url>	
+	<service>
+		<url>http://192.168.254.191:17061/termnetwebservice/termnetService?wsdl</url>		
+		<parser_method>training</parser_method>
+	</service>
+	<dbconnection>
+		<url>192.168.0.127</url>
+		<port>3306</port>
+		<user>root</user>
+		<pwd>cyberobject</pwd>
+	</dbconnection>	
+</service_url>
