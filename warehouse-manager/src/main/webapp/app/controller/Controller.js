@@ -1,24 +1,19 @@
 /**
  * 
  */
- 
+
 Ext.define('joe.controller.Controller', {
 	extend: 'Ext.app.Controller',	  
-//    stores: ['goStore'],  
-//    models: ['goModel'],  
-//    views: ['mainview'],  
+    stores: ['examinTree'],  
+    models: ['examinTree'],  
+    views: ['Viewport'],  
 //    refs: [  
 //        {  
 //            ref: 'mainview',  
 //            selector: 'mainview'  
 //        }  
 //    ],  
-	init:function(){
-//		console.log('Initialized Users!');
-		 this.control({
-		 	 'viewport > mainview': {
-		 	 	
-		 	 }
-		 });
+	init:function(){		
+		Ext.create('joe.view.Viewport').show();
 	}
 });

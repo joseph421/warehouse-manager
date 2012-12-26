@@ -1,9 +1,12 @@
 /**
  * 
  */
- 
-Ext.define('examinTreeModel', {
-	extend: 'Ext.data.TreeModel',
+Ext.require([    
+    'Ext.data.*'    
+]); 
+
+Ext.define('joe.model.examinTree', {
+	extend: 'Ext.data.Model',
 	fields:['leaf','text','id','level','iconCls'],
     fields: [
     	{name: 'id', type: 'int'},

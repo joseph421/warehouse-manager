@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.sql.*;  
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,10 +20,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import joe.warehouse.manager.util.XmlUtils;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 
 
-public class WarehouseManagerServlet extends HessianServlet
+public class WarehouseManagerServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 	// private static final Logger log = Logger.getLogger(ConfigAdminServletTest.class);
@@ -38,6 +42,9 @@ public class WarehouseManagerServlet extends HessianServlet
 
 	private static String CONFIGADMIN_URL = null;
 	private static String CONFIGADMIN_METHOD = null;
+	private static String dbConnectionURL = null;
+	private static String user = null;
+	private static String password = null;
 	
 
 	public WarehouseManagerServlet()
@@ -50,10 +57,13 @@ public class WarehouseManagerServlet extends HessianServlet
 		PrintWriter out = null;
 
 		ServletOutputStream outStream = null;
-
-		String action = request.getParameter("action");
+		
 		String customerip = request.getRemoteAddr();
 		String customername = request.getRemoteHost();
+		
+		String action = request.getParameter("action");
+		String orderingId = request.getParameter("orderingId");
+		
 		String name = request.getParameter("name");
 		String type = request.getParameter("type");
 		String names = request.getParameter("names");
@@ -83,11 +93,11 @@ public class WarehouseManagerServlet extends HessianServlet
 				return;
 			}
 
-			if ("getNerTypes".equalsIgnoreCase(action)) {
+			if ("getTree".equalsIgnoreCase(action)) {
 				// get ner Types
-//				responseObj = getNerTypesJson(action);
-			}else if ("getRegNersByType".equalsIgnoreCase(action)) {
-//				responseObj = getRegNersByType(type);
+				responseObj = getTree(action);
+			}else if ("getExaminNodes".equalsIgnoreCase(action)) {
+				responseObj = getExaminNodes(action,orderingId);
 								
 			}
 		}
@@ -116,6 +126,7 @@ public class WarehouseManagerServlet extends HessianServlet
 	
 	public void init(ServletConfig config) throws ServletException {
 		String urlFilePath = config.getInitParameter("serviceUrl");
+		String driver = "com.mysql.jdbc.Driver";
 		if (null == urlFilePath) {
 			log.error("TrainingServlet.init() Can not get config file url.");
 		} else {
@@ -128,7 +139,11 @@ public class WarehouseManagerServlet extends HessianServlet
 				CONFIGADMIN_URL = doc.getNodeText("service_url/service/url");
 				CONFIGADMIN_METHOD = doc
 						.getNodeText("service_url/service/parser_method");
-
+				
+				dbConnectionURL = doc.getNodeText("service_url/dbconnection/url");
+				user = doc.getNodeText("service_url/dbconnection/user");
+				password = doc.getNodeText("service_url/dbconnection/pwd");
+				
 //				Service.initWSDL(CONFIGADMIN_URL);
 //				termnetService = Service.getInstance();
 //				nerServiceSoap = Service.getInstance().getServiceSoap();
@@ -138,6 +153,63 @@ public class WarehouseManagerServlet extends HessianServlet
 			}
 		}
 	}
-
-
+	
+	private JSONArray getTree(String action) throws Exception
+	{
+		JSONArray o = new JSONArray();
+		Connection conn = DriverManager.getConnection(dbConnectionURL, user, password);
+		Statement statement = conn.createStatement();
+		String sql = "select id,orderingName from ordering";
+		
+		try{
+			ResultSet rs = statement.executeQuery(sql);
+			while(rs.next()){
+				int id = rs.getInt("id");
+				String name = rs.getString("orderingName");
+				JSONObject curNode = new JSONObject();
+				
+				curNode.put("leaf", "false");
+				curNode.put("text", name);
+				curNode.put("id", Integer.toString(id));
+				curNode.put("level", "2");
+				o.add(curNode);				
+			}			
+			
+			
+		}
+		catch(Exception ex){
+			conn.close();
+		}
+		conn.close();
+		return o;
+	}
+	
+	private JSONArray getExaminNodes(String action, String orderingId) throws Exception
+	{
+		JSONArray o = new JSONArray();
+		String sqlExamin = "select id,orderingId,examName,content from examinations where orderingId="+orderingId;
+		Connection conn = DriverManager.getConnection(dbConnectionURL, user, password);
+		Statement statement = conn.createStatement();
+		try{
+			ResultSet rsExam = statement.executeQuery(sqlExamin);
+			while(rsExam.next()){
+				int id = rsExam.getInt("id");				
+				String examName = rsExam.getString("examName");
+				String content = rsExam.getString("content");
+				
+				JSONObject curNode = new JSONObject();				
+				curNode.put("leaf", "true");
+				curNode.put("text", examName);
+				curNode.put("content", content);
+				curNode.put("id", Integer.toString(id));
+				curNode.put("level", "3");
+				o.add(curNode);				
+			}
+		}catch(Exception ex)
+		{
+			conn.close();
+		}
+		conn.close();
+		return o;
+	}
 }

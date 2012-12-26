@@ -5,8 +5,7 @@
 		<parser_method>training</parser_method>
 	</service>
 	<dbconnection>
-		<url>192.168.0.127</url>
-		<port>3306</port>
+		<url>jdbc:mysql://127.0.0.1:3306/myweb</url>		
 		<user>root</user>
 		<pwd>cyberobject</pwd>
 	</dbconnection>	

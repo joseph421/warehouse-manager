@@ -22,7 +22,12 @@
 	<servlet>		
 		<display-name>WarehouseManagerServlet</display-name>
 		<servlet-name>WarehouseManagerServlet</servlet-name>
-		<servlet-class>joe.warehouse.manager.WarehouseManagerServlet</servlet-class>		
+		<servlet-class>joe.warehouse.manager.WarehouseManagerServlet</servlet-class>
+		<init-param>
+	    	<description>Load web service url from service_url.xml</description>
+	    	<param-name>serviceUrl</param-name>
+	    	<param-value>/WEB-INF/service_url.xml</param-value>
+    	</init-param>		
 	</servlet>
 	
 	<servlet-mapping>
