@@ -168,13 +168,12 @@ public class WarehouseManagerServlet extends HttpServlet
 				String name = rs.getString("orderingName");
 				JSONObject curNode = new JSONObject();
 				
-				curNode.put("leaf", "false");
+				curNode.put("leaf", "false");				
 				curNode.put("text", name);
 				curNode.put("id", Integer.toString(id));
 				curNode.put("level", "2");
 				o.add(curNode);				
-			}			
-			
+			}	
 			
 		}
 		catch(Exception ex){
@@ -201,8 +200,10 @@ public class WarehouseManagerServlet extends HttpServlet
 				curNode.put("leaf", "true");
 				curNode.put("text", examName);
 				curNode.put("content", content);
-				curNode.put("id", Integer.toString(id));
+				curNode.put("iconCls", "logic");
+				curNode.put("id", orderingId +'-'+Integer.toString(id));
 				curNode.put("level", "3");
+				
 				o.add(curNode);				
 			}
 		}catch(Exception ex)

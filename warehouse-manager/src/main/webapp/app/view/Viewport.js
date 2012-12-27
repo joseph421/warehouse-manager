@@ -1,13 +1,14 @@
 /**
  * 
- */ 
-Ext.define('joe.view.Viewport', {	
+ */
+ Ext.require('joe.view.uploadPanel');
+ Ext.define('joe.view.Viewport', {	
 	extend: 'Ext.container.Viewport',	
 	layout: 'fit',
 	items: [{
            		xtype:'panel',
            		title: 'Joseph Lee Go traning base',
-           		layout: 'border',
+           		layout: 'border',           		
            		items:[
            			{
            				xtype:'panel',
@@ -21,14 +22,16 @@ Ext.define('joe.view.Viewport', {
            				]           				
            			},
            			{
-           				xtype:'panel',           				
+           				xtype:'panel',
+           				id: 'ExaminationPanel',
            				title: 'Examination',
            				split: true,   
            				region: 'center',
            				autoWidth: true,
            				items: [
-           					Ext.create('joe.view.mainContainer')
-           				]           			},
+           					
+           				]
+           			},
            			{
            				xtype:'panel',
            				title: 'Property',
