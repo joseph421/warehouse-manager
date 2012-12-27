@@ -22,6 +22,10 @@ Ext.define('joe.view.treePanel',{
 			listeners : {
 				'click' : function() {
 					var uploadPanel = Ext.create('joe.view.uploadPanel');
+					var mainTree = Ext.getCmp('mainTree');
+					
+					var orderingId = mainTree.getSelectionModel().selected.items[0].data.id;
+					Ext.getCmp('tf_orderingId').setValue(orderingId);
 					uploadPanel.show();
 				}
 			}

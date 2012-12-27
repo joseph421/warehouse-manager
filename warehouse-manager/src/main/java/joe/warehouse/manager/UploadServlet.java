@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.soap.SOAPFaultException;
 
+import joe.warehouse.manager.util.XmlUtils;
+
 import net.sf.json.JSONObject;
 
 import org.apache.commons.fileupload.FileItem;
@@ -33,6 +35,11 @@ public class UploadServlet extends HttpServlet
 
 	private static String TRAINING_URL = null;
 	private static String TRAINING_METHOD = null;
+	
+	private static String CONFIGADMIN_URL = null;
+	private static String dbConnectionURL = null;
+	private static String user = null;
+	private static String password = null;
 
 	// private static boolean GENERATE_ALL_PHRASE;
 	
@@ -40,6 +47,7 @@ public class UploadServlet extends HttpServlet
 	public void init(ServletConfig config) throws ServletException
 	{ 
 		//URL url = this.getClass().getClassLoader().getResource("../../uploadfile");
+		String urlFilePath = config.getInitParameter("serviceUrl");
 		
 		UPLOAD_PATH = config.getServletContext().getRealPath("/uploadfile");
 		if (null != UPLOAD_PATH)
@@ -49,7 +57,21 @@ public class UploadServlet extends HttpServlet
 //			URL temp_url = this.getClass().getClassLoader().getResource("../../uploadfile/buffer");
 //			if (null != temp_url)
 //				UPLOAD_TEMP_PATH = temp_url.getPath();
-			UPLOAD_TEMP_PATH = config.getServletContext().getRealPath("/uploadfile/buffer");
+			String realPath = config.getServletContext().getRealPath(
+					urlFilePath);
+			try{
+				XmlUtils doc = new XmlUtils(new File(realPath));
+			
+				CONFIGADMIN_URL = doc.getNodeText("service_url/service/url");
+				UPLOAD_TEMP_PATH = config.getServletContext().getRealPath("/uploadfile/buffer");
+				dbConnectionURL = doc.getNodeText("service_url/dbconnection/url");
+				user = doc.getNodeText("service_url/dbconnection/user");
+				password = doc.getNodeText("service_url/dbconnection/pwd");
+			}
+			catch(Exception ex)
+			{
+				
+			}
 		}
 		else
 		{
@@ -66,6 +88,8 @@ public class UploadServlet extends HttpServlet
 		String returnXmlStr = null;
 		String taskStr = request.getParameter("task");
 		String webAction = request.getParameter("webAction");
+		String orderingId = request.getParameter("orderingId");
+		String name = request.getParameter("name");
 		String ignoreConflict = request.getParameter("ignoreConflict");
 
 		if (webAction == "" || webAction == null)
@@ -121,6 +145,8 @@ public class UploadServlet extends HttpServlet
 						rName = fileName.substring(0, fileSplit) + "_" + sessionid + fileName.substring(fileSplit);
 						File savedFile = new File(UPLOAD_PATH, rName);
 						fi.write(savedFile);
+						
+						
 					}
 				}
 				LogService.info("upload succeed rName->" + rName);
@@ -141,6 +167,8 @@ public class UploadServlet extends HttpServlet
 		out.flush();
 		out.close();
 	}
+	
+//	private¡¡void updateToDB(String )¡¡
 	
 	private JSONObject returnMsg(String state ,String msg){
 		JSONObject rtnObj = new JSONObject();
