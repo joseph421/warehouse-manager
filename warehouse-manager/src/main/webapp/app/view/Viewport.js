@@ -7,7 +7,7 @@
 	layout: 'fit',
 	items: [{
            		xtype:'panel',
-           		title: 'Joseph Lee Go traning base',
+           		title: '奉璋围棋训练',
            		layout: 'border',           		
            		items:[
            			{
@@ -24,7 +24,7 @@
            			{
            				xtype:'panel',
            				id: 'ExaminationPanel',
-           				title: 'Examination',
+           				title: '试题',
            				split: true,   
            				region: 'center',
            				autoWidth: true,
@@ -34,8 +34,11 @@
            			},
            			{
            				xtype:'panel',
-           				title: 'Property',
-           				split: true,   
+           				title: '属性设置',
+           				split: true, 
+           				collapsible : true,
+						animCollapse : true,
+						collapsed : true,
            				region: 'east',
            				width: 300,
            				items:[

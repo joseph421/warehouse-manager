@@ -16,6 +16,15 @@ Ext.define('joe.view.treePanel',{
     store: store,
     tbar : ['->', 
     	{
+			text : '新增题库',
+			id :'addLibraryBtn',
+			disabled: false,
+			listeners : {
+				'click' : function() {
+					
+				}
+			}
+		},'-',{
 			text : '上传试题',
 			id :'uploadBtn',
 			disabled: true,
@@ -69,9 +78,9 @@ Ext.define('joe.view.treePanel',{
     				embedString = '<embed allowScriptAccess="never" allowNetworking="internal" autostart="0" ' 
     					+'  HEIGHT="500" TYPE="application/x-shockwave-flash" WIDTH="700"' 
     					+' SRC="./flash/goxiti.swf?ver=1.02" ALLOWNETWORKING="none"' 
-    					+' FLASHVARS="sgftext=(;GM[1]AP[StoneBase:SGFParser.3.0.1]'
+    					+' FLASHVARS="home=&sgftext='
     					+ record.raw.content 
-    					+')"></EMBED><br />';
+    					+'"></EMBED><br />';
     			}
     			var mainContainer = Ext.create('joe.view.mainContainer',{
     				extend: 'Ext.container.Container',

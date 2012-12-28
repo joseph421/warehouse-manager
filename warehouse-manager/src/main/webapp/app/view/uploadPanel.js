@@ -52,13 +52,11 @@ Ext.define('joe.view.uploadPanel',{
 			        var orderingId = Ext.getCmp('tf_orderingId').getValue();
 			        	if(form.isValid()){
 				            form.submit({
-					            url: 'upload',
-					            params: {
-					            	orderingId : orderingId,
-					            	name: examName
-					            },
+					            url: 'upload?orderingId='+orderingId+'&name='+examName,					           
 					            waitMsg: 'Uploading your sgf file...',
 					            success: function(fp, o) {
+					            	var rtnf = fp;
+					            	var rtno = o;
 					            	msg('Success', 'Processed file "' + o.result.file + '" on the server');
 					            }
 				        	});

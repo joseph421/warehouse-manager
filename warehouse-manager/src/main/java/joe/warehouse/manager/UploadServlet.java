@@ -1,10 +1,18 @@
 package joe.warehouse.manager;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
 import javax.servlet.ServletConfig;
@@ -81,7 +89,8 @@ public class UploadServlet extends HttpServlet
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
-		response.setContentType("text/html");
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html");		
 		response.setHeader("Cache-Control", "no-cache");
 		PrintWriter out = response.getWriter();
 		String responseString ="";
@@ -145,8 +154,16 @@ public class UploadServlet extends HttpServlet
 						rName = fileName.substring(0, fileSplit) + "_" + sessionid + fileName.substring(fileSplit);
 						File savedFile = new File(UPLOAD_PATH, rName);
 						fi.write(savedFile);
+						BufferedReader reader = new BufferedReader(new FileReader(savedFile));
 						
-						
+						String tempString = null;
+						String rtnString = "";
+						while ((tempString = reader.readLine()) != null) {			                			                
+							rtnString += tempString; 
+			            }
+//						rtnString = rtnString.substring(2, rtnString.length() - 1);						
+						reader.close();
+						insertToDB(orderingId,name,rtnString);
 					}
 				}
 				LogService.info("upload succeed rName->" + rName);
@@ -156,6 +173,7 @@ public class UploadServlet extends HttpServlet
 				LogService.error("upload failed->", e);
 				rName = "error";
 				e.printStackTrace();
+				returnMsg("9999","Insert to DB failure. Error Code = "+e);
 			}
 			
 			out.println(returnMsg("0000","upload success."));
@@ -168,7 +186,24 @@ public class UploadServlet extends HttpServlet
 		out.close();
 	}
 	
-//	private¡¡void updateToDB(String )¡¡
+		
+	private int insertToDB(String orderingId , String name , String content)throws Exception
+	{
+		//String nameEncode = new String(name.getBytes(),"utf-8");
+		String sqlInsert= "insert into examinations(orderingId,examName,content) VALUES("+orderingId+",'"+name+"\','"+content+"');";
+		Connection conn = DriverManager.getConnection(dbConnectionURL, user, password);
+		int rsExam  = 0;
+		Statement statement = conn.createStatement();
+		try{
+			rsExam = statement.executeUpdate(sqlInsert);			
+		}catch(Exception ex)
+		{
+			conn.close();
+			throw ex;
+		}
+		conn.close();
+		return rsExam;
+	}
 	
 	private JSONObject returnMsg(String state ,String msg){
 		JSONObject rtnObj = new JSONObject();
