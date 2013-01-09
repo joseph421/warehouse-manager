@@ -1,4 +1,4 @@
-#Thu Dec 27 17:51:48 CST 2012
+#Wed Jan 09 15:47:24 CST 2013
 eclipse.preferences.version=1
 encoding//src/main/webapp/app/app.js=UTF-8
 encoding//src/main/webapp/app/component/MessageWindow.js=UTF-8
@@ -9,5 +9,6 @@ encoding//src/main/webapp/app/store/goStore.js=UTF-8
 encoding//src/main/webapp/app/view/Viewport.js=UTF-8
 encoding//src/main/webapp/app/view/mainContainer.js=UTF-8
 encoding//src/main/webapp/app/view/propertyGrid.js=UTF-8
+encoding//src/main/webapp/app/view/qipuTreePanel.js=UTF-8
 encoding//src/main/webapp/app/view/treePanel.js=UTF-8
 encoding//src/main/webapp/app/view/uploadPanel.js=UTF-8

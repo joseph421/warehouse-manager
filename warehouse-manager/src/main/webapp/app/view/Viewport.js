@@ -15,10 +15,22 @@
            				border: false,
            				split: true,
            				region: 'west',
-           				layout: 'fit',
+           				layout: 'border',
            				width: 300,
-           				items: [
-           					Ext.create('joe.view.treePanel')
+           				items: [{
+           						xtype: 'container',
+           						region: 'center',
+           						height: 405,
+           						layout: 'fit',           						
+           						items:[Ext.create('joe.view.treePanel')]
+           					},{
+           						xtype: 'container',
+           						layout: 'fit',
+           						split: true,
+           						region: 'south',
+           						autoHeight: true,
+           						items:[Ext.create('joe.view.qipuTreePanel')]
+           					}
            				]           				
            			},
            			{

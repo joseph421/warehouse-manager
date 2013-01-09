@@ -158,10 +158,10 @@ public class UploadServlet extends HttpServlet
 						
 						String tempString = null;
 						String rtnString = "";
-						while ((tempString = reader.readLine()) != null) {			                			                
-							rtnString += tempString; 
+						while ((tempString = reader.readLine()) != null) {
+							rtnString += tempString;
 			            }
-//						rtnString = rtnString.substring(2, rtnString.length() - 1);						
+//						rtnString = rtnString.substring(2, rtnString.length() - 1);
 						reader.close();
 						insertToDB(orderingId,name,rtnString);
 					}
@@ -208,7 +208,7 @@ public class UploadServlet extends HttpServlet
 	private JSONObject returnMsg(String state ,String msg){
 		JSONObject rtnObj = new JSONObject();
 		rtnObj.put("state", state);
-		rtnObj.put("message", msg);		
+		rtnObj.put("message", msg);
 		return rtnObj;
 	}
 

@@ -1,6 +1,7 @@
 /**
  * 
- */ 
+ */
+ 
 var store = Ext.create('Ext.data.TreeStore', {
 	model: 'examinTree.model.Tree',
 	proxy: {
@@ -8,17 +9,17 @@ var store = Ext.create('Ext.data.TreeStore', {
 	   	url: 'warehousemanagerservlet'
 	}
 });
-
-Ext.define('joe.view.treePanel',{
+ 
+Ext.define('joe.view.qipuTreePanel',{
 	extend: 'Ext.tree.Panel',
-	id : 'mainTree',
-    title: '习题库',
+	id : 'qipuTree',
+    title: '棋谱库',
     height: 400,
     store: store,
     tbar : ['->',
     	{
-			text : '新增题库',
-			id :'addLibraryBtn',
+			text : '新增棋谱库',
+			id :'addQipuBtn',
 			disabled: false,
 			listeners : {
 				'click' : function() {
@@ -26,8 +27,8 @@ Ext.define('joe.view.treePanel',{
 				}
 			}
 		},'-',{
-			text : '上传试题',
-			id :'uploadBtn',
+			text : '上传棋谱',
+			id :'uploadQipuBtn',
 			disabled: true,
 			listeners : {
 				'click' : function() {
@@ -42,20 +43,20 @@ Ext.define('joe.view.treePanel',{
 		}
 	],
     root : {
-        text: "奉璋的习题"
+        text: "奉璋的棋谱"
     },
     listeners:{
     	scope: this,
     	render : function(p){
-    		var rootNode = p.getRootNode();
-			
-    		var store = p.getStore();
-    		store.load({
-    			params: {
-		        	action: 'getTree'
-		    	}
-    		});
-    		rootNode.expand(false, false);
+//    		var rootNode = p.getRootNode();
+//			
+//    		var store = p.getStore();
+//    		store.load({
+//    			params: {
+//		        	action: 'getTree'
+//		    	}
+//    		});
+//    		rootNode.expand(false, false);
     	},
     	select: function(p,record, index,eOpts){
     		if (record.data.depth == 1){
@@ -76,10 +77,10 @@ Ext.define('joe.view.treePanel',{
     			var embedString ='';
     			if (record.raw.content != ''){
     				
-    				embedString = '<embed allowScriptAccess="never" allowNetworking="internal" autostart="0" ' 
-    					+'  HEIGHT="500" TYPE="application/x-shockwave-flash" WIDTH="700"' 
-    					+' SRC="./flash/goxiti.swf?ver=1.02" ALLOWNETWORKING="none"' 
-    					+' FLASHVARS="home=&sgftext='
+    				embedString = '<EMBED src="goview.swf?ver=1.2" width="788" height="615"  ' 
+    					+'  type="application/x-shockwave-flash"  ' 
+    					+' SRC="./flash/goxiti.swf?ver=1.02" ALLOWNETWORKING="none" ALLOWSCRIPTACCESS="samedomain"' 
+    					+' FLASHVARS="encoding=utf-8&panel=250&sgftext='
     					+ record.raw.content
     					+'"></EMBED><br />';
     					
