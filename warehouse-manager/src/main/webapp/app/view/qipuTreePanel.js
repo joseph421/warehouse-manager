@@ -79,7 +79,7 @@ Ext.define('joe.view.qipuTreePanel',{
     				
     				embedString = '<EMBED src="goview.swf?ver=1.2" width="788" height="615"  ' 
     					+'  type="application/x-shockwave-flash"  ' 
-    					+' SRC="./flash/goxiti.swf?ver=1.02" ALLOWNETWORKING="none" ALLOWSCRIPTACCESS="samedomain"' 
+    					+' SRC="./flash/goview.swf?ver=1.2" ALLOWNETWORKING="none" ALLOWSCRIPTACCESS="samedomain"' 
     					+' FLASHVARS="encoding=utf-8&panel=250&sgftext='
     					+ record.raw.content
     					+'"></EMBED><br />';
