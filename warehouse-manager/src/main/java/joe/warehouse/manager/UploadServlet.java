@@ -98,6 +98,7 @@ public class UploadServlet extends HttpServlet
 		String taskStr = request.getParameter("task");
 		String webAction = request.getParameter("webAction");
 		String orderingId = request.getParameter("orderingId");
+		String orderingType = request.getParameter("orderingType");
 		String name = request.getParameter("name");
 		String ignoreConflict = request.getParameter("ignoreConflict");
 
@@ -163,7 +164,7 @@ public class UploadServlet extends HttpServlet
 			            }
 //						rtnString = rtnString.substring(2, rtnString.length() - 1);
 						reader.close();
-						insertToDB(orderingId,name,rtnString);
+						insertToDB(orderingId,orderingType,name,rtnString);
 					}
 				}
 				LogService.info("upload succeed rName->" + rName);
@@ -187,10 +188,16 @@ public class UploadServlet extends HttpServlet
 	}
 	
 		
-	private int insertToDB(String orderingId , String name , String content)throws Exception
+	private int insertToDB(String orderingId ,String orderingType,String name , String content)throws Exception
 	{
 		//String nameEncode = new String(name.getBytes(),"utf-8");
-		String sqlInsert= "insert into examinations(orderingId,examName,content) VALUES("+orderingId+",'"+name+"\','"+content+"');";
+		 
+		String sqlInsert= "";
+		if ("Ï°Ìâ".equalsIgnoreCase(orderingType) )
+		     sqlInsert = "insert into examinations(orderingId,examName,content) VALUES("+orderingId+",'"+name+"\','"+content+"');";
+		else if("ÆåÆ×".equalsIgnoreCase(orderingType))
+			sqlInsert = "insert into qipu(orderingId,name,content) VALUES("+orderingId+",'"+name+"\','"+content+"');";
+		
 		Connection conn = DriverManager.getConnection(dbConnectionURL, user, password);
 		int rsExam  = 0;
 		Statement statement = conn.createStatement();

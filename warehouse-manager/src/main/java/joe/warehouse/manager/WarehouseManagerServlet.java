@@ -70,6 +70,7 @@ public class WarehouseManagerServlet extends HttpServlet
 		String types = request.getParameter("types");
 		String avaliable = request.getParameter("avaliable");
 		String info = request.getParameter("info");
+		String orderingType = request.getParameter("orderingType");
 		String comment = request.getParameter("comment");
 		String saveFlag = request.getParameter("saveFlag");
 		String start = request.getParameter("start");
@@ -95,11 +96,14 @@ public class WarehouseManagerServlet extends HttpServlet
 
 			if ("getTree".equalsIgnoreCase(action)) {
 				// get ner Types
-				responseObj = getTree(action);
+				responseObj = getTree(action , orderingType);
 			}else if ("getExaminNodes".equalsIgnoreCase(action)) {
-				responseObj = getExaminNodes(action,orderingId);
-								
+				responseObj = getExaminNodes(action,orderingId);								
+			}else if ("getQipuNodes".equalsIgnoreCase(action)){
+				responseObj = getQipuNodes(action, orderingId);
 			}
+			
+			
 		}
 		catch(Exception ex){			
 			ex.printStackTrace();
@@ -154,12 +158,12 @@ public class WarehouseManagerServlet extends HttpServlet
 		}
 	}
 	
-	private JSONArray getTree(String action) throws Exception
+	private JSONArray getTree(String action , String orderingType) throws Exception
 	{
 		JSONArray o = new JSONArray();
 		Connection conn = DriverManager.getConnection(dbConnectionURL, user, password);
 		Statement statement = conn.createStatement();
-		String sql = "select id,orderingName from ordering";
+		String sql = "select id,orderingName from ordering where type='"+orderingType+"'";
 		
 		try{
 			ResultSet rs = statement.executeQuery(sql);
@@ -213,4 +217,36 @@ public class WarehouseManagerServlet extends HttpServlet
 		conn.close();
 		return o;
 	}
+	
+	private JSONArray getQipuNodes(String action, String orderingId) throws Exception
+	{
+		JSONArray o = new JSONArray();
+		String sqlExamin = "select id,orderingId,name,content from qipu where orderingId="+orderingId;
+		Connection conn = DriverManager.getConnection(dbConnectionURL, user, password);
+		Statement statement = conn.createStatement();
+		try{
+			ResultSet rsExam = statement.executeQuery(sqlExamin);
+			while(rsExam.next()){
+				int id = rsExam.getInt("id");				
+				String qipuName = rsExam.getString("name");
+				String content = rsExam.getString("content");
+				
+				JSONObject curNode = new JSONObject();				
+				curNode.put("leaf", "true");
+				curNode.put("text", qipuName);
+				curNode.put("content", content);
+				curNode.put("iconCls", "logic");
+				curNode.put("id", orderingId +'-'+Integer.toString(id));
+				curNode.put("level", "3");
+				
+				o.add(curNode);				
+			}
+		}catch(Exception ex)
+		{
+			conn.close();
+		}
+		conn.close();
+		return o;
+	}
+	
 }

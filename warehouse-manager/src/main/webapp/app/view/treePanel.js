@@ -36,13 +36,14 @@ Ext.define('joe.view.treePanel',{
 					
 					var orderingId = mainTree.getSelectionModel().selected.items[0].data.id;
 					Ext.getCmp('tf_orderingId').setValue(orderingId);
+					Ext.getCmp('tf_orderingType').setValue('棋谱');
 					uploadPanel.show();
 				}
 			}
 		}
 	],
     root : {
-        text: "奉璋的习题"
+        text: "习题"
     },
     listeners:{
     	scope: this,
@@ -52,7 +53,8 @@ Ext.define('joe.view.treePanel',{
     		var store = p.getStore();
     		store.load({
     			params: {
-		        	action: 'getTree'
+		        	action: 'getTree',
+		        	orderingType : '习题'
 		    	}
     		});
     		rootNode.expand(false, false);

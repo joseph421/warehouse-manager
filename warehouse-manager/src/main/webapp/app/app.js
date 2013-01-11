@@ -18,6 +18,7 @@ Ext.application({
 	requires : [
 		'joe.component.MessageWindow',
 		'joe.view.treePanel',
+		'joe.view.qipuTreePanel',
 		'joe.view.propertyGrid',
 		'joe.view.mainContainer'
 	],

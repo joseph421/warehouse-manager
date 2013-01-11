@@ -30,6 +30,12 @@ Ext.define('joe.view.uploadPanel',{
 		    },
 		    {
 		    	xtype: 'textfield',
+		    	id: 'tf_orderingType',
+		    	disabled: true,
+		        fieldLabel: '类型'
+		    },
+		    {
+		    	xtype: 'textfield',
 		    	id: 'tf_examName',
 		        fieldLabel: '题目'
 		    },{
@@ -50,9 +56,10 @@ Ext.define('joe.view.uploadPanel',{
 			        var form = this.up('form').getForm();
 			        var examName = Ext.getCmp('tf_examName').getValue();
 			        var orderingId = Ext.getCmp('tf_orderingId').getValue();
+			        var orderingType = Ext.getCmp('tf_orderingType').getValue();
 			        	if(form.isValid()){
 				            form.submit({
-					            url: 'upload?orderingId='+orderingId+'&name='+examName,					           
+					            url: 'upload?orderingId='+orderingId+'&name='+examName+'&orderingType='+orderingType,					           
 					            waitMsg: 'Uploading your sgf file...',
 					            success: function(fp, o) {
 					            	var rtnf = fp;
