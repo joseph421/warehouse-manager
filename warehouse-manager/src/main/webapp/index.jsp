@@ -6,6 +6,10 @@
     <meta http-equiv="cache-control" content="no-cache">   
     <meta http-equiv="expires" content="0">   
     <title>Warehouse Manager </title>
+    <link rel="shortcut icon" href="images/chinchilla.ico">
+	<link rel="stylesheet" href="styles/jquery/buttons.css">
+	<link rel="stylesheet" href="styles/jquery/themes/sunny/jquery.ui.all.css">
+	<script type="text/javascript" src="jquery/jquery-1.8.0.js"></script>
 	<!-- gz begin -->    
     <link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css"/>
     <link rel="stylesheet" type="text/css" href="styles/maingui.css"/>    

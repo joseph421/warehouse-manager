@@ -79,31 +79,34 @@ Ext.define('joe.view.qipuTreePanel',{
     			var embedString ='';
     			if (record.raw.content != ''){
     				
-    				embedString = '<EMBED src="./flash/goview.swf?ver=1.1.11" width="788" height="615"  ' 
-    					+'  type="application/x-shockwave-flash"  ' 
-    					+' ALLOWSCRIPTACCESS="samedomain"' 
+    				embedString = '<EMBED src="./flash/goview.swf?ver=1.1.11" width="788" height="615"  '
+    					+'  type="application/x-shockwave-flash"  '
+    					+' ALLOWSCRIPTACCESS="samedomain"'
     					+' FLASHVARS="panel=250&sgftext='
     					+ record.raw.content
-    					+'"></EMBED><br />';    					 
+    					+'"></EMBED><br />';
+    				
     			}
+    			
     			var mainContainer = Ext.create('joe.view.mainContainer',{
     				extend: 'Ext.container.Container',
-    				layout: 'border',
+//    				layout: 'fit',
     				items: [
     					{
     						xtype: 'panel',
     						region: 'center',
-    						width: 400,
+//    						width: 400,
     						split: true,
     						html: embedString 
-    					},
-    					{
-    						xtype: 'panel',
-    						region: 'east',
-    						items: [
-    							
-    						]
     					}
+//    					,
+//    					{
+//    						xtype: 'panel',
+//    						region: 'east',
+//    						items: [
+//    							
+//    						]
+//    					}
     				]
     			});
     			var examinPanel = Ext.getCmp('ExaminationPanel');
